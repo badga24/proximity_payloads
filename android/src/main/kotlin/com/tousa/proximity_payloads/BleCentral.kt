@@ -20,6 +20,7 @@ class BleCentral(private val context: Context, private val eventSink: EventChann
     private val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     private val bluetoothAdapter = bluetoothManager.adapter
     private val scanner = bluetoothAdapter.bluetoothLeScanner
+    private var bluetoothGatt: BluetoothGatt? = null
 
     fun startScanning() {
         val filters = listOf(ScanFilter.Builder()
@@ -50,8 +51,16 @@ class BleCentral(private val context: Context, private val eventSink: EventChann
     }
 
     private fun connectToDevice(device: BluetoothDevice) {
-        device.connectGatt(context, false, gattCallback)
+        bluetoothGatt = device.connectGatt(context, false, gattCallback)
     }
+
+    fun stopScanning() {
+        scanner?.stopScan(scanCallback)
+        bluetoothGatt?.close()
+        bluetoothGatt = null
+        Log.d("BLE", "Stopped scanning and closed GATT client")
+    }
+
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {

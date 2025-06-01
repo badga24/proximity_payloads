@@ -66,8 +66,13 @@ class BlePeripheral(private val context: Context, private val payload: Map<Strin
         }
         Log.d("BLE", "Sending payload: $json to ${gattServer.connectedDevices.size} device(s)")
 
-        // Optionnel : réinitialiser
         characteristic.value = byteArrayOf()
+    }
+
+    fun stopAdvertising() {
+        advertiser?.stopAdvertising(advertiseCallback)
+        gattServer?.close()
+        Log.d("BLE", "Stopped advertising and closed GATT server")
     }
 
     private val gattServerCallback = object : BluetoothGattServerCallback() {
@@ -92,6 +97,7 @@ class BlePeripheral(private val context: Context, private val payload: Map<Strin
             }
         }
 
+        // not used for now
         override fun onCharacteristicWriteRequest(
             device: BluetoothDevice, requestId: Int,
             characteristic: BluetoothGattCharacteristic,

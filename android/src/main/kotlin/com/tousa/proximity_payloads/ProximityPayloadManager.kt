@@ -49,6 +49,12 @@ class ProximityPayloadManager(
     }
 
     fun stop() {
-        // Optionnel : implémenter l’arrêt de scan/pub
+        Log.d("BLE", "Stopping BLE operations")
+
+        blePeripheral?.stopAdvertising()
+        blePeripheral = null
+
+        bleCentral?.stopScanning()
+        bleCentral = null
     }
 }
