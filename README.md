@@ -9,4 +9,4 @@ Ajoutez ceci à votre `pubspec.yaml` :
 ```yaml
 proximity_payloads:
   git:
-    url: https://github.com/tonCompte/proximity_payloads.git
+    url: https://github.com/badga24/proximity_payloads.git
